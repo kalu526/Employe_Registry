@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+  backend:
+    image: backend
+    build:
+      context: backend
+      dockerfile: ./Dockerfile
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/EmployeeInformation
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/src/app/
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    ports: 
+      - "27017:27017"
+    volumes:
+      - data:/data/db
+  frontend:
+    image: frontend
+    build:
+      context: frontend
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/src/app/
+
+volumes: 
+  data:
+    
